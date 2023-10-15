@@ -1,0 +1,3 @@
+- 👋 Hi, I’m @cadouille9
+- 👀 I’m interested in AI and sustainability.
+- 🌱 I’m currently learning Python to develop some scripts to improve my workflow and work more efficiently.
