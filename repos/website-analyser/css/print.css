@@ -1,0 +1,56 @@
+/* ==========================================================================
+   Print stylesheet — only the report survives printing → clean A4 PDF.
+   ========================================================================== */
+
+@page {
+  size: A4;
+  margin: 16mm 15mm;
+}
+
+.top,
+.hero,
+.results,
+.pricing,
+footer,
+.no-print,
+.report-toolbar {
+  display: none !important;
+}
+
+body { background: #fff !important; }
+
+main { padding: 0 !important; max-width: none !important; }
+
+.report-wrap { margin: 0 !important; }
+
+#report-container {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.report { font-size: 10.5pt; }
+
+.report section { page-break-inside: avoid; }
+
+/* Watermark on every printed page of the preview */
+.report--watermarked .watermark {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 120pt;
+  color: rgba(179, 66, 46, 0.15);
+  transform: rotate(-30deg);
+  z-index: 999;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.bar {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}

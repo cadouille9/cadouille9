@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarbonLens — Website CO₂ Audit</title>
+  <meta name="description" content="How much CO₂ does your website emit? Free instant audit with the Sustainable Web Design model — plus white-label PDF reports for agencies.">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+</head>
+<body>
+  <header class="top no-print">
+    <a class="brand" href="index.html">🌍 <strong>Carbon</strong>Lens</a>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" id="lang-en">EN</button>
+      <button type="button" id="lang-de">DE</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero no-print">
+      <h1 id="tagline"></h1>
+      <p class="sub" id="sub"></p>
+      <div class="analyse-row">
+        <input type="url" id="url-input" autocomplete="url" spellcheck="false">
+        <button type="button" class="btn primary" id="analyse-btn"></button>
+      </div>
+      <p id="analyse-status" class="status" role="status"></p>
+    </section>
+
+    <section id="results" class="results no-print" hidden></section>
+
+    <section id="report-section" class="report-wrap" hidden></section>
+
+    <section class="pricing no-print" id="pricing">
+      <div class="pricing-card">
+        <h2><span class="en">For agencies & consultants</span><span class="de">Für Agenturen & Berater</span></h2>
+        <div class="price">€149 <small><span class="en">/ year, unlimited reports</span><span class="de">/ Jahr, unbegrenzte Berichte</span></small></div>
+        <ul>
+          <li><span class="en">Unlimited audits — free for everyone, forever</span><span class="de">Unbegrenzte Analysen — für alle dauerhaft kostenlos</span></li>
+          <li><span class="en">White-label PDF reports with your name & logo</span><span class="de">White-Label-PDF-Berichte mit Ihrem Namen & Logo</span></li>
+          <li><span class="en">Client field, English & German output</span><span class="de">Kundenfeld, Ausgabe auf Deutsch & Englisch</span></li>
+          <li><span class="en">Sell audits to your clients at your own price</span><span class="de">Verkaufen Sie Audits an Ihre Kunden zu Ihrem Preis</span></li>
+        </ul>
+        <p class="pricing-note"><span class="en">Run any audit, click “Create client report” and unlock from there.</span><span class="de">Beliebiges Audit ausführen, „Kundenbericht erstellen" klicken und dort freischalten.</span></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="no-print">
+    <p id="footer-privacy"></p>
+    <p id="support-note"></p>
+    <p id="imprint"><!-- TODO before launch: add your Impressum / legal notice here (see SETUP.md, Day 3) --></p>
+  </footer>
+
+  <dialog id="unlock-dialog" class="unlock-dialog no-print">
+    <h3 id="unlock-title"></h3>
+    <input type="text" id="unlock-input" autocomplete="off" spellcheck="false">
+    <p id="unlock-msg" class="unlock-msg" role="status"></p>
+    <div class="dialog-actions">
+      <a id="unlock-buy" class="btn secondary" target="_blank" rel="noopener"></a>
+      <button type="button" class="btn secondary" id="unlock-cancel"></button>
+      <button type="button" class="btn primary" id="unlock-activate"></button>
+    </div>
+  </dialog>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

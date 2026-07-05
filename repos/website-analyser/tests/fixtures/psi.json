@@ -1,0 +1,39 @@
+{
+  "lighthouseResult": {
+    "requestedUrl": "https://example.com/",
+    "finalDisplayedUrl": "https://example.com/",
+    "categories": { "performance": { "score": 0.62 } },
+    "audits": {
+      "network-requests": {
+        "details": {
+          "items": [
+            { "url": "https://example.com/", "transferSize": 30000, "resourceType": "Document" },
+            { "url": "https://example.com/app.js", "transferSize": 300000, "resourceType": "Script" },
+            { "url": "https://example.com/vendor.js", "transferSize": 200000, "resourceType": "Script" },
+            { "url": "https://example.com/style.css", "transferSize": 50000, "resourceType": "Stylesheet" },
+            { "url": "https://example.com/hero.jpg", "transferSize": 900000, "resourceType": "Image" },
+            { "url": "https://example.com/team.png", "transferSize": 500000, "resourceType": "Image" },
+            { "url": "https://example.com/font.woff2", "transferSize": 120000, "resourceType": "Font" }
+          ]
+        }
+      },
+      "total-byte-weight": { "numericValue": 2100000 },
+      "modern-image-formats": {
+        "title": "Serve images in next-gen formats",
+        "details": { "overallSavingsBytes": 600000 }
+      },
+      "unused-javascript": {
+        "title": "Reduce unused JavaScript",
+        "details": { "overallSavingsBytes": 250000 }
+      },
+      "uses-text-compression": {
+        "title": "Enable text compression",
+        "details": { "overallSavingsBytes": 30000 }
+      },
+      "unused-css-rules": {
+        "title": "Reduce unused CSS",
+        "details": { "overallSavingsBytes": 500 }
+      }
+    }
+  }
+}

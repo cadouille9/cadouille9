@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VSME Report Studio — Your sustainability report, done in a day</title>
+  <meta name="description" content="Create a VSME-aligned sustainability report for your SME in your browser. Guided questionnaire, built-in CO₂ calculator, polished PDF. Your data never leaves your device.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+  <style>
+    :root {
+      --green-900: #14352a; --green-700: #1e5c43; --green-600: #237a55;
+      --green-100: #e7f4ee; --ink: #1c2723; --ink-soft: #55655e;
+      --line: #dde7e2; --bg: #f6faf8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; color: var(--ink); background: var(--bg); line-height: 1.6;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    .de { display: none; }
+    body.lang-de .de { display: revert; }
+    body.lang-de .en { display: none; }
+
+    header.top {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px clamp(18px, 6vw, 80px);
+    }
+    .brand { font-size: 1.15rem; color: var(--green-900); text-decoration: none; }
+    .lang-switch button {
+      padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line);
+      background: #fff; cursor: pointer; font-size: 0.8rem; color: var(--ink);
+    }
+    .lang-switch button.active { background: var(--green-600); border-color: var(--green-600); color: #fff; }
+
+    .hero { text-align: center; padding: 60px clamp(18px, 6vw, 80px) 70px; }
+    .hero h1 { font-size: clamp(1.8rem, 4.5vw, 3rem); margin: 0 0 16px; color: var(--green-900); max-width: 22ch; margin-inline: auto; }
+    .hero p.sub { font-size: 1.1rem; color: var(--ink-soft); max-width: 60ch; margin: 0 auto 30px; }
+    .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-block; padding: 13px 30px; border-radius: 10px; font-weight: 600;
+      text-decoration: none; font-size: 1rem; border: 1px solid transparent;
+    }
+    .btn.primary { background: var(--green-600); color: #fff; }
+    .btn.primary:hover { background: var(--green-700); }
+    .btn.secondary { background: #fff; color: var(--green-700); border-color: var(--green-600); }
+    .badge-row { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 28px; font-size: 0.82rem; color: var(--ink-soft); }
+
+    section.band { padding: 56px clamp(18px, 6vw, 80px); }
+    section.band.alt { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    section h2 { text-align: center; font-size: 1.6rem; color: var(--green-900); margin: 0 0 30px; }
+    .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; max-width: 1080px; margin: 0 auto; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
+    section.band.alt .card { background: var(--bg); }
+    .card h3 { margin: 0 0 8px; font-size: 1.02rem; }
+    .card p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); }
+    .emoji { font-size: 1.6rem; display: block; margin-bottom: 10px; }
+
+    .pricing-card {
+      max-width: 430px; margin: 0 auto; background: #fff; border: 2px solid var(--green-600);
+      border-radius: 16px; padding: 34px; text-align: center;
+    }
+    .price { font-size: 2.6rem; font-weight: 800; color: var(--green-900); }
+    .price small { font-size: 1rem; font-weight: 400; color: var(--ink-soft); }
+    .pricing-card ul { text-align: left; padding-left: 0; list-style: none; margin: 22px 0; }
+    .pricing-card li { padding: 6px 0 6px 28px; position: relative; font-size: 0.92rem; }
+    .pricing-card li::before { content: "✓"; position: absolute; left: 4px; color: var(--green-600); font-weight: 700; }
+
+    details { max-width: 720px; margin: 0 auto 10px; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; }
+    summary { cursor: pointer; font-weight: 600; font-size: 0.95rem; }
+    details p { font-size: 0.9rem; color: var(--ink-soft); }
+
+    footer { padding: 40px clamp(18px, 6vw, 80px); font-size: 0.78rem; color: var(--ink-soft); text-align: center; }
+    footer a { color: var(--green-700); }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="index.html">🌱 <strong>VSME</strong> Report Studio</a>
+    <div class="lang-switch">
+      <button type="button" id="lang-en" class="active">EN</button>
+      <button type="button" id="lang-de">DE</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1><span class="en">Your VSME sustainability report — done in a day, not in weeks.</span><span class="de">Ihr VSME-Nachhaltigkeitsbericht — an einem Tag statt in Wochen.</span></h1>
+    <p class="sub">
+      <span class="en">Big customers and banks are asking your company for ESG data? Answer with the official EU answer for SMEs: a report aligned with the VSME standard. Guided questions in plain language, a built-in CO₂ calculator, and a polished PDF at the end — no consultants, no software installation.</span>
+      <span class="de">Großkunden und Banken fragen nach ESG-Daten? Antworten Sie mit der offiziellen EU-Lösung für KMU: einem Bericht nach dem VSME-Standard. Verständlich formulierte Fragen, integrierter CO₂-Rechner und am Ende ein professionelles PDF — ohne Berater, ohne Software-Installation.</span>
+    </p>
+    <div class="cta-row">
+      <a class="btn primary" href="app.html"><span class="en">Start for free →</span><span class="de">Kostenlos starten →</span></a>
+      <a class="btn secondary" href="#pricing"><span class="en">Pricing</span><span class="de">Preis</span></a>
+    </div>
+    <div class="badge-row">
+      <span>🔒 <span class="en">Data never leaves your browser</span><span class="de">Daten verlassen Ihren Browser nicht</span></span>
+      <span>🇪🇺 <span class="en">Aligned with EFRAG's VSME standard</span><span class="de">Ausgerichtet am VSME-Standard der EFRAG</span></span>
+      <span>💳 <span class="en">Pay once, no subscription</span><span class="de">Einmal zahlen, kein Abo</span></span>
+    </div>
+  </section>
+
+  <section class="band alt">
+    <h2><span class="en">Why SMEs need this now</span><span class="de">Warum KMU das jetzt brauchen</span></h2>
+    <div class="cols">
+      <div class="card"><span class="emoji">📥</span>
+        <h3><span class="en">The questionnaires keep coming</span><span class="de">Die Fragebögen kommen laufend</span></h3>
+        <p><span class="en">Corporate customers must report on their supply chain — so they push ESG questionnaires down to you. One VSME report answers most of them at once.</span><span class="de">Großunternehmen müssen über ihre Lieferkette berichten — und reichen ESG-Fragebögen an Sie weiter. Ein VSME-Bericht beantwortet die meisten davon auf einmal.</span></p>
+      </div>
+      <div class="card"><span class="emoji">🏦</span>
+        <h3><span class="en">Banks ask too</span><span class="de">Auch Banken fragen</span></h3>
+        <p><span class="en">ESG data increasingly feeds into credit decisions. A structured report puts you ahead of the file that has nothing.</span><span class="de">ESG-Daten fließen zunehmend in Kreditentscheidungen ein. Ein strukturierter Bericht verschafft Ihnen einen Vorsprung.</span></p>
+      </div>
+      <div class="card"><span class="emoji">💸</span>
+        <h3><span class="en">Consultants charge thousands</span><span class="de">Berater kosten Tausende</span></h3>
+        <p><span class="en">A typical SME sustainability report costs €5,000–15,000 in consulting fees. This tool guides you through the same standard for a fraction of that.</span><span class="de">Ein typischer KMU-Nachhaltigkeitsbericht kostet 5.000–15.000 € an Beratungshonoraren. Dieses Tool führt Sie für einen Bruchteil davon durch denselben Standard.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <h2><span class="en">How it works</span><span class="de">So funktioniert es</span></h2>
+    <div class="cols">
+      <div class="card"><span class="emoji">1️⃣</span>
+        <h3><span class="en">Answer guided questions</span><span class="de">Geführte Fragen beantworten</span></h3>
+        <p><span class="en">All 11 disclosures of the VSME Basic Module (B1–B11), explained in plain language with hints on where to find each number. Progress is saved automatically in your browser.</span><span class="de">Alle 11 Angaben des VSME-Basismoduls (B1–B11), verständlich erklärt, mit Hinweisen, wo Sie jede Zahl finden. Der Fortschritt wird automatisch im Browser gespeichert.</span></p>
+      </div>
+      <div class="card"><span class="emoji">🧮</span>
+        <h3><span class="en">CO₂ is calculated for you</span><span class="de">CO₂ wird für Sie berechnet</span></h3>
+        <p><span class="en">Enter kWh and litres from your bills — Scope 1 & 2 emissions, energy mix and GHG intensity are computed live, with transparent, adjustable emission factors.</span><span class="de">Tragen Sie kWh und Liter aus Ihren Rechnungen ein — Scope-1- und Scope-2-Emissionen, Energiemix und THG-Intensität werden live berechnet, mit transparenten, anpassbaren Emissionsfaktoren.</span></p>
+      </div>
+      <div class="card"><span class="emoji">📄</span>
+        <h3><span class="en">Export a polished PDF</span><span class="de">Professionelles PDF exportieren</span></h3>
+        <p><span class="en">A clean, client-ready report with cover page, KPI tables and methodology notes — in English or German. Send it to whoever asked.</span><span class="de">Ein sauberer, versandfertiger Bericht mit Deckblatt, KPI-Tabellen und Methodikhinweisen — auf Deutsch oder Englisch. Schicken Sie ihn direkt an den Anfragenden.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt" id="pricing">
+    <h2><span class="en">Simple pricing</span><span class="de">Einfacher Preis</span></h2>
+    <div class="pricing-card">
+      <div class="price">€149 <small><span class="en">once, per report year</span><span class="de">einmalig, pro Berichtsjahr</span></small></div>
+      <ul>
+        <li><span class="en">Full questionnaire & CO₂ calculator — free to try</span><span class="de">Kompletter Fragebogen & CO₂-Rechner — kostenlos testen</span></li>
+        <li><span class="en">Watermark-free, client-ready PDF export</span><span class="de">PDF-Export ohne Wasserzeichen, versandfertig</span></li>
+        <li><span class="en">English & German report output</span><span class="de">Bericht auf Deutsch & Englisch</span></li>
+        <li><span class="en">Your data stays on your device — GDPR-friendly by design</span><span class="de">Ihre Daten bleiben auf Ihrem Gerät — DSGVO-freundlich by design</span></li>
+        <li><span class="en">Email support</span><span class="de">E-Mail-Support</span></li>
+      </ul>
+      <a class="btn primary" href="app.html"><span class="en">Try it free — pay only to export</span><span class="de">Kostenlos testen — zahlen Sie nur für den Export</span></a>
+    </div>
+  </section>
+
+  <section class="band">
+    <h2>FAQ</h2>
+    <details>
+      <summary><span class="en">What is the VSME standard?</span><span class="de">Was ist der VSME-Standard?</span></summary>
+      <p><span class="en">The "Voluntary standard for non-listed micro-, small- and medium-sized undertakings" published by EFRAG (the EU's sustainability reporting advisor) in December 2024. It is the EU-recommended way for SMEs to answer ESG data requests from large customers and banks in one standardized report.</span><span class="de">Der „freiwillige Standard für nicht börsennotierte Kleinst-, kleine und mittlere Unternehmen", veröffentlicht von der EFRAG (dem Beratungsgremium der EU für Nachhaltigkeitsberichterstattung) im Dezember 2024. Er ist der von der EU empfohlene Weg für KMU, ESG-Datenanfragen von Großkunden und Banken mit einem standardisierten Bericht zu beantworten.</span></p>
+    </details>
+    <details>
+      <summary><span class="en">Where does my data go?</span><span class="de">Wohin gehen meine Daten?</span></summary>
+      <p><span class="en">Nowhere. The entire app runs in your browser; your answers are stored only on your device (localStorage) and you can download them as a backup file. There is no account, no upload and no tracking.</span><span class="de">Nirgendwohin. Die gesamte App läuft in Ihrem Browser; Ihre Antworten werden nur auf Ihrem Gerät gespeichert (localStorage), und Sie können sie als Sicherungsdatei herunterladen. Kein Konto, kein Upload, kein Tracking.</span></p>
+    </details>
+    <details>
+      <summary><span class="en">Is this an official or audited report?</span><span class="de">Ist das ein offizieller oder geprüfter Bericht?</span></summary>
+      <p><span class="en">The VSME standard is voluntary, and this tool is a preparation aid — not legal advice or an audit. The report clearly states the methodology used, which is exactly what recipients want to see.</span><span class="de">Der VSME-Standard ist freiwillig, und dieses Tool ist eine Erstellungshilfe — keine Rechtsberatung und keine Prüfung. Der Bericht legt die verwendete Methodik offen, genau das erwarten die Empfänger.</span></p>
+    </details>
+    <details>
+      <summary><span class="en">What if I get stuck?</span><span class="de">Was, wenn ich nicht weiterkomme?</span></summary>
+      <p><span class="en">Every question has a plain-language hint telling you where to find the number (utility bill, payroll, waste contractor's statement…). Skipped questions simply don't appear in the report — the standard allows that.</span><span class="de">Jede Frage hat einen verständlichen Hinweis, wo Sie die Zahl finden (Energierechnung, Lohnbuchhaltung, Entsorgerabrechnung …). Übersprungene Fragen erscheinen einfach nicht im Bericht — der Standard erlaubt das.</span></p>
+    </details>
+  </section>
+
+  <footer>
+    <p>
+      <span class="en">VSME Report Studio is an independent tool and is not affiliated with EFRAG or the European Commission. No legal advice. </span>
+      <span class="de">VSME Report Studio ist ein unabhängiges Tool und steht in keiner Verbindung zur EFRAG oder zur Europäischen Kommission. Keine Rechtsberatung. </span>
+      <a href="app.html"><span class="en">Open the app</span><span class="de">Zur App</span></a>
+    </p>
+    <p id="imprint"><!-- TODO before launch: add your Impressum / legal notice and privacy policy here (see SETUP.md, Day 3) --></p>
+  </footer>
+
+  <script>
+    const setLang = (l) => {
+      document.body.classList.toggle('lang-de', l === 'de');
+      document.documentElement.lang = l;
+      document.getElementById('lang-en').classList.toggle('active', l === 'en');
+      document.getElementById('lang-de').classList.toggle('active', l === 'de');
+      try { localStorage.setItem('vsme-landing-lang', l); } catch {}
+    };
+    document.getElementById('lang-en').addEventListener('click', () => setLang('en'));
+    document.getElementById('lang-de').addEventListener('click', () => setLang('de'));
+    let saved = null;
+    try { saved = localStorage.getItem('vsme-landing-lang'); } catch {}
+    setLang(saved || ((navigator.language || 'en').startsWith('de') ? 'de' : 'en'));
+  </script>
+</body>
+</html>
