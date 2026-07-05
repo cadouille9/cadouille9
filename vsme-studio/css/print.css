@@ -1,0 +1,71 @@
+/* ==========================================================================
+   Print stylesheet — turns the report preview into a clean A4 PDF via the
+   browser's "Save as PDF". Everything except the report is hidden.
+   ========================================================================== */
+
+@page {
+  size: A4;
+  margin: 18mm 16mm;
+}
+
+/* Hide the app chrome */
+.sidebar,
+.no-print,
+.report-toolbar {
+  display: none !important;
+}
+
+body {
+  background: #fff !important;
+}
+
+.app-shell {
+  display: block !important;
+}
+
+.main {
+  padding: 0 !important;
+  max-width: none !important;
+}
+
+#report-container {
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.report {
+  font-size: 10.5pt;
+}
+
+.report-cover {
+  padding: 90px 0 100px;
+  page-break-after: always;
+  border-bottom: none;
+}
+
+.report-section {
+  page-break-inside: avoid;
+}
+
+.data-table th,
+.data-table td {
+  font-size: 9.5pt;
+}
+
+/* Watermark must survive printing on every page of the preview */
+.report--watermarked .watermark {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 130pt;
+  color: rgba(179, 66, 46, 0.15);
+  transform: rotate(-30deg);
+  z-index: 999;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}

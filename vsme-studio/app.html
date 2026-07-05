@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VSME Report Studio — App</title>
+  <meta name="description" content="Create your VSME sustainability report in your browser. Your data never leaves your device.">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar no-print">
+      <a class="brand" href="index.html">🌱 <strong>VSME</strong> Report Studio</a>
+      <p class="tagline" id="tagline"></p>
+
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" id="lang-en">EN</button>
+        <button type="button" id="lang-de">DE</button>
+      </div>
+
+      <div class="progress">
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <span class="progress-label" id="progress-label"></span>
+      </div>
+
+      <nav id="nav-sections" aria-label="Report sections"></nav>
+
+      <div class="sidebar-tools">
+        <button type="button" class="tool-btn" id="btn-export"></button>
+        <label class="tool-btn" id="btn-import-label" for="btn-import"></label>
+        <input type="file" id="btn-import" accept="application/json" hidden>
+        <button type="button" class="tool-btn danger" id="btn-reset"></button>
+      </div>
+
+      <p class="privacy-note" id="privacy-note"></p>
+      <p class="support-note" id="support-note"></p>
+      <span class="save-indicator" id="save-indicator"></span>
+    </aside>
+
+    <main id="main" class="main"></main>
+  </div>
+
+  <dialog id="unlock-dialog" class="unlock-dialog no-print">
+    <h3 id="unlock-title"></h3>
+    <input type="text" id="unlock-input" autocomplete="off" spellcheck="false">
+    <p id="unlock-msg" class="unlock-msg" role="status"></p>
+    <div class="dialog-actions">
+      <a id="unlock-buy" class="btn secondary" target="_blank" rel="noopener"></a>
+      <button type="button" class="btn secondary" id="unlock-cancel"></button>
+      <button type="button" class="btn primary" id="unlock-activate"></button>
+    </div>
+  </dialog>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
