@@ -44,6 +44,9 @@ async function analyse() {
     const key = err.message === 'bad_url' ? 'errBadUrl' : err.message === 'psi_quota' ? 'errQuota' : 'errFailed';
     status.className = 'status error';
     status.textContent = t(lang, key);
+    if (key === 'errQuota' && !CONFIG.psiApiKey) {
+      status.textContent += ' ' + t(lang, 'errQuotaOperator');
+    }
   } finally {
     clearTimeout(longTimer);
     btn.disabled = false;

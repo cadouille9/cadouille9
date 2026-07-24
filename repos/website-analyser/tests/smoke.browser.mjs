@@ -33,6 +33,7 @@ const server = http.createServer(async (req, res) => {
   try {
     const pathname = new URL(req.url, 'http://x').pathname;
     let file;
+    if (pathname.startsWith('/stub/quota')) { res.writeHead(429); res.end('{}'); return; }
     if (pathname.startsWith('/stub/psi')) file = path.join(ROOT, 'tests/fixtures/psi.json');
     else if (pathname.startsWith('/stub/green')) file = path.join(ROOT, 'tests/fixtures/green.json');
     else file = path.join(ROOT, pathname === '/' ? 'index.html' : decodeURIComponent(pathname));
@@ -124,6 +125,20 @@ try {
   await page.waitForFunction(() => document.documentElement.lang === 'de');
   assert.match(await page.locator('#report-container').textContent(), /Website-CO₂-Audit/);
   assert.match(await page.locator('#results').textContent(), /0,607/);
+
+  step = 'quota (429) shows rate-limit message with operator hint';
+  const ctx3 = await browser.newContext();
+  await ctx3.addInitScript(`window.__CARBONLENS_ENDPOINTS = { psi: '${base}/stub/quota?url=', greencheck: '${base}/stub/green/' };`);
+  const page3 = await ctx3.newPage();
+  await page3.goto(`${base}/index.html`);
+  await page3.click('#lang-en');
+  await page3.fill('#url-input', 'example.com');
+  await page3.click('#analyse-btn');
+  await page3.waitForSelector('.status.error');
+  const quotaMsg = await page3.locator('#analyse-status').textContent();
+  assert.match(quotaMsg, /rate-limited/);
+  assert.match(quotaMsg, /PageSpeed API key/); // operator hint (no key configured)
+  await ctx3.close();
 
   step = 'bad URL error message';
   await page.fill('#url-input', 'nodots');

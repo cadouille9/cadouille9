@@ -96,7 +96,8 @@ export function parsePsi(psi) {
 export async function fetchPsi(url) {
   const key = CONFIG.psiApiKey ? `&key=${encodeURIComponent(CONFIG.psiApiKey)}` : '';
   const res = await fetch(endpoints().psi + encodeURIComponent(url) + key);
-  if (res.status === 429) throw new Error('psi_quota');
+  // Google rate-limits keyless requests aggressively; 403 and 429 both occur.
+  if (res.status === 429 || res.status === 403) throw new Error('psi_quota');
   if (!res.ok) throw new Error('psi_failed');
   return parsePsi(await res.json());
 }
