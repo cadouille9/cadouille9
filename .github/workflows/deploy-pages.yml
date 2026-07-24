@@ -2,8 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
-    paths: ['vsme-studio/**', '.github/workflows/deploy-pages.yml']
+    branches: [main, claude/build-monetizable-product-qvsahd]
+    paths: ['vsme-studio/**', 'repos/website-analyser/**', '.github/workflows/deploy-pages.yml']
   workflow_dispatch:
 
 permissions:
@@ -23,9 +23,18 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - name: Assemble site (CarbonLens at /, VSME Studio at /vsme/)
+        run: |
+          mkdir -p _site/vsme
+          cp -r repos/website-analyser/. _site/
+          rm -rf _site/.github _site/node_modules _site/publish.sh
+          cp -r vsme-studio/. _site/vsme/
+          rm -rf _site/vsme/node_modules
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: vsme-studio
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
