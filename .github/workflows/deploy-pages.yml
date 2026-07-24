@@ -38,3 +38,5 @@ jobs:
           path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
+
+# Pages enabled by repo admin on 2026-07-24 — this touch retriggers the deploy.
